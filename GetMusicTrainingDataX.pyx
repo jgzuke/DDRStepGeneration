@@ -247,62 +247,26 @@ def get_beats(beat_times, beat_frames):
         bpm *= 2
     return bpm
 
-
-# # Helpers to test get_beats() above
-# - get_bpm(file: String)
-# - get_song_bpms()
-# - test_get_beats(song_data: Map(SongData))
-
-# In[5]:
-
-def get_bpm(file):
-    with open(file, "r") as ins:
-        result = re.search('#BPMS:(.*);', line)
-        bpm_string = result.group(1)
-        if len(bpm_string.split(',')) == 1:
-            return float(bpm_string.split('=')[1])
-        return 0
-    return 0
-
-def get_song_bpms(song_data):
-    song_bpms = {}
-    for key, song in song_data.items():
-        song_bpms[key] = get_bpm('StepMania/Songs/{0}/{1}/{1}.sm'.format(song.pack, song.name))
-    return song_bpms
-
-def test_get_beats(song_data):
-    song_bpms = get_song_bpms(song_data)
-    errors = []
-    for key in song_data:
-        song = song_data[key]
-        real_beat = song_bpms[key]
-        if real_beat != 0:
-            prediced_beat = get_beats(song.beat_times, song.beat_frames)[0][1]
-            for i in range (1,4):
-                if abs((prediced_beat * (i + 1) / (i)) - real_beat) < abs(prediced_beat - real_beat):
-                    prediced_beat *= (i + 1) / (i)
-            print ('{0:.3f} - {1:.3f} = {2:.3f} ({3})'.format(prediced_beat, real_beat, prediced_beat - real_beat, song.name))
-
 #songs = [('In The Groove', song) for song in listdir('StepMania/Songs/In The Groove') if song != '.DS_Store'][:15]
 #song_data_temp = load_songs(songs, True)
 #test_get_beats(song_data_temp)
 
 
 # In[15]:
-
-packs = ['In The Groove', 'In The Groove 2', 'In The Groove 3', 'In The Groove Rebirth', 'In The Groove Rebirth +', 'In The Groove Rebirth 2 (BETA)', 'Piece of Cake', 'Piece of Cake 2', 'Piece of Cake 3', 'Piece of Cake 4', 'Piece of Cake 5']
-for pack in packs:
-    songs = [(pack, song) for song in listdir('StepMania/Songs/{0}'.format(pack)) if song != '.DS_Store']
-    for song in songs:
-        gc.collect()
-        try:
-            if '{0}~{1}_beat_features.csv'.format(song[0], song[1]) in listdir('data'):
-                print ('Song Already Loaded')
-            else:
-                SongFile(song[0], song[1], 'from_stepfile')
-        except:
-            print ('Error loading song\n') 
-        gc.collect()
+def generate_all():
+    packs = ['In The Groove', 'In The Groove 2', 'In The Groove 3', 'In The Groove Rebirth', 'In The Groove Rebirth +', 'In The Groove Rebirth 2 (BETA)', 'Piece of Cake', 'Piece of Cake 2', 'Piece of Cake 3', 'Piece of Cake 4', 'Piece of Cake 5']
+    for pack in packs:
+        songs = [(pack, song) for song in listdir('StepMania/Songs/{0}'.format(pack)) if song != '.DS_Store']
+        for song in songs:
+            gc.collect()
+            try:
+                if '{0}~{1}_beat_features.csv'.format(song[0], song[1]) in listdir('data'):
+                    print ('Song Already Loaded')
+                else:
+                    SongFile(song[0], song[1], 'from_stepfile')
+            except:
+                print ('Error loading song\n') 
+            gc.collect()
 
 
 # In[ ]:

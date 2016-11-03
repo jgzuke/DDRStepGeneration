@@ -2,8 +2,7 @@
 # coding: utf-8
 
 # In[1]:
-
-get_ipython().magic('matplotlib inline')
+from __future__ import print_function
 import copy
 import pandas as pd
 import numpy as np
@@ -16,7 +15,6 @@ import random
 import gc
 from os import listdir
 from os.path import isfile, join
-from __future__ import print_function
 from numpy import median, diff
 
 
@@ -41,12 +39,14 @@ from numpy import median, diff
 
 # In[12]:
 
+# started 12:19
+
 sample_rate_down = 1
 hop_length_down = 8
 sr = 11025 * 16 / sample_rate_down
 hop_length = 512 / (sample_rate_down * hop_length_down)
-samples_per_beat = 24 / 4
-steps_per_bar = 24
+samples_per_beat = 48 / 4
+steps_per_bar = 48
 class SongFile:
     # misc includes
     # - offset
